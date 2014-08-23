@@ -1,0 +1,17 @@
+{
+	"name": "yanobase/yanobase",
+  "description": "Database migration made easy",
+  "require": {
+      "php": ">=5.4.0",
+      "symfony/console": "2.5.*"
+  },  
+  "require-dev": {
+      "phpunit/phpunit": "4.2"
+  },
+  "autoload": {
+  	"psr-4": {
+  		"Yanobase\\": "src/",
+  		"Test\\": "tests/"  		
+  	}
+  }
+}
