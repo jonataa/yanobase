@@ -19,7 +19,7 @@ class DirectoryTest extends AbstractTest
   {
     $files = $this->directory->scan($path);
     $this->assertNotEmpty($files);    
-    $this->assertCount(1, $files);
+    $this->assertCount(2, $files);
   }
 
 }
