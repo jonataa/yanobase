@@ -14,7 +14,13 @@ class Directory
 		if (! file_exists($path))
 			throw new Exception("Folder not exists! {$path}", 1);		
 		
-		return array_filter(scandir($path), $this->filterExtension($extension));
+		$filenames = array_filter(scandir($path), $this->filterExtension($extension));
+
+		$filesWithPath = array_map(function($file) use ($path) {
+			return $file = $path . DIRECTORY_SEPARATOR . $file;
+		}, $filenames);
+
+		return $filesWithPath;
 	}
 
 	public function filterExtension($extension)
