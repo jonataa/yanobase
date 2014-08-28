@@ -4,36 +4,39 @@ namespace Yanobase\Framework;
 
 use Yanobase\FileSystem\Directory;
 use Yanobase\FileSystem\File;
-use Yanobase\Database\DatabaseFactory;
+use Yanobase\Database\Database;
 use Yanobase\Exception;
 
 class Yanobase
 {
 
-	protected $path;
+  protected $database;
+  protected $migrationsPath;  
 
-	public function __construct($path)
-	{
-		$this->path = $path;
-	}
+  public function __construct(Database $database, $migrationsPath)
+  {
+    $this->database       = $database;
+    $this->migrationsPath = $migrationsPath;
+  }  
 
-	public function migrate(\PDO $pdo)
-	{
-		$directory = new Directory;
-		$filenames = $directory->scan($this->path);
+  public function migrate()
+  {
+    $directory = new Directory;
+    $filenames = $directory->scan($this->migrationsPath);
 
-		$file = new File;		
-		$contents = $file->getContents($filenames);
+    $file      = new File;   
+    $contents  = $file->getContents($filenames);
 
-		if (isset($contents) && !empty($contents)) {
-			$database = DatabaseFactory::createFromPDO($pdo);
-			$contents = array_map(function ($content) use ($database) {								
-				$content['affected'] = $database->exec($content['raw']);
-				return $content;
-			}, $contents);						
-		}
+    if (isset($contents) && !empty($contents))
+      $contents = array_map('self::executeAll', $contents);    
 
-		return $contents;
-	}
+    return $contents;
+  }
+
+  private function executeAll($content) 
+  {
+    $content['affected'] = $this->database->exec($content['raw']);
+    return $content;
+  }
 
 }

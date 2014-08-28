@@ -15,9 +15,9 @@ class DirectoryTest extends AbstractTest
     $this->directory = new Directory;
   }
 
-  public function testScan($path = './migrations')
+  public function testScanMigrationFolder($path = './migrations')
   {
-    $files = $this->directory->scan($path);
+    $files = $this->directory->scan($path);        
     $this->assertNotEmpty($files);    
     $this->assertCount(2, $files);
   }
