@@ -32,7 +32,7 @@ class Database
 
   public function exec($statement)
   {   
-    $affected = $this->adapter->exec($statement);
+    $affected  = $this->adapter->exec($statement);
     $errorInfo = $this->adapter->errorInfo();
     if ($this->adapter->hasError())      
       throw new Exception("Error Processing Statement: " . implode(' ', $errorInfo), 1);              
